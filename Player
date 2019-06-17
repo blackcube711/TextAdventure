@@ -1,0 +1,46 @@
+
+public class Player {
+	private String playerName;
+	private String playerWeapon;
+	private int playerHealth;
+	private int playerDamage;
+	private Item[] inventory;
+
+	public Player(String name, String weapon, int playerhealth, int playerdamage) {
+		this.playerName = name;
+		this.playerWeapon = weapon;
+		this.playerHealth = playerhealth;
+		this.playerDamage = playerdamage;
+	}
+
+	public void addItem(Item newItem) {
+
+	}
+
+	public String getPlayerName() {
+		return playerName;
+	}
+
+	// PLAYER HEALTH
+	public int getplayerHealth() {
+		return this.playerHealth;
+	}
+
+	// PLAYER DAMAGE
+
+	public int getplayerDamage() {
+		return this.playerDamage;
+	}
+
+	public String toString() {
+		String msg = "";
+		int i = 0;
+		msg += "[Player " + (i + 1) + "]\n";
+		msg += "Name: [" + this.playerName + "]\n";
+		msg += "Weapon: [" + this.playerWeapon + "]\n";
+		msg += "Health Point: [" + this.playerHealth + "]\n";
+
+		return msg;
+	}
+
+}
