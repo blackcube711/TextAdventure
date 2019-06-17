@@ -1,0 +1,42 @@
+public class Monster {
+	private String monsterName;
+	private int minMonsterhealth;
+	private int maxMonsterHealth;
+	private int minMonsterDamage;
+	private int maxMonsterDamage;
+
+	public Monster(String monsterName, int minMonsterhealth, int maxMonsterHealth, int minMonsterDamage,
+			int maxMonsterDamage) {
+		this.monsterName = monsterName;
+		this.minMonsterhealth = minMonsterhealth;
+		this.maxMonsterHealth = maxMonsterHealth;
+		this.minMonsterDamage = maxMonsterDamage;
+		this.maxMonsterDamage = maxMonsterDamage;
+	}
+
+	
+	// MIN MONSTER HEALTH
+
+	public int getminMonsterHealth() {
+		return this.minMonsterhealth;
+	}
+
+	// MAX MONSTER HEALTH
+
+	public int getmaxMonsterHealth() {
+		return this.maxMonsterHealth;
+	}
+
+	// MIN MONSTER DAMAGE
+
+	public int getminMonsterDamage() {
+		return this.minMonsterDamage;
+	}
+
+	// MAX MONSTER DAMAGE
+
+	public int getmaxMonsterDamage() {
+		return this.maxMonsterDamage;
+	}
+
+}
