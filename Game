@@ -1,0 +1,249 @@
+import java.io.*;
+import java.util.Arrays;
+import java.util.Random;
+import java.util.Scanner;
+
+public class Game {
+
+	private Player[] player;
+	private String monster;
+
+	public Game(int numOfMaxPlayer) {
+		this.player = new Player[numOfMaxPlayer];
+		this.monster = null;
+
+		gameSetup();
+		gameSave();
+
+	}
+
+	public void gameSave() {
+		Scanner saveScanner = new Scanner(System.in);
+		System.out.println("What would you like to do?");
+		System.out.println("1.Save the Character and quit ");
+		System.out.println("2.Play Game");
+		System.out.println("3.Quit program");
+
+		int selection = 0;
+		selection = Integer.parseInt(saveScanner.nextLine());
+		while (selection != 0) {
+			if (selection == 1) {
+				BufferedWriter outFile = null;
+				try {
+					outFile = new BufferedWriter(new FileWriter("C:/Users/willk/Desktop/game.txt"));
+					int i = 0;
+					while (i < this.player.length) {
+						outFile.write(this.player[i] + "\n");
+						i++;
+					}
+					outFile.close();
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+
+				}
+				System.out.println("Character Saved");
+				selection = 0;
+
+			} else if (selection == 2) {
+				System.out.println("going to dungeon game");
+				dungeon();
+			} else if (selection == 3) {
+				System.out.println("Quitting the program");		
+				selection = 0;
+			} else
+				System.out.println("Invalid! Re-Enter");
+			
+		}
+		ending();
+	}
+
+	public void ending() {
+
+		System.out.println("THANK YOU FOR PLAYING!");
+		System.out.println("Copyright 2018, William Kim - student of RMIT, All rights reserved.");
+
+	}
+
+	public void dungeon() {
+		Scanner dungeonScanner = new Scanner(System.in);
+		Random rand = new Random();
+
+		// Player Reset
+		int playerHealthPoint = 20;
+		int playerDamage = 5;
+
+		// Monster Reset
+		String[] Monsters = { "Skeleton", "Zombie", "Warrior", "Assasin", "Goblin", "Troll", };
+		this.monster = Monsters[rand.nextInt(Monsters.length)];
+		Monster monsterStats = new Monster(this.monster, 10, 20, 2, 10);
+		int minEnemyHealth = monsterStats.getminMonsterHealth();
+		int maxEnemyHealth = monsterStats.getmaxMonsterHealth();
+		int minEnemyDamage = monsterStats.getminMonsterDamage();
+		int maxEnemyDamage = monsterStats.getmaxMonsterDamage();
+		int monsterHealthPoint = rand.nextInt(maxEnemyHealth - minEnemyHealth + 1) + minEnemyHealth;
+		int monsterDamage = rand.nextInt(maxEnemyDamage - minEnemyDamage + 1) + maxEnemyDamage;
+		System.out.println("you were here");
+		int selection = 0;
+		while (monsterHealthPoint > 0 && playerHealthPoint > 0) {
+			System.out.println("----------------------------------------------");
+			System.out.println("\t# '" + this.monster + "' has appeared! #");
+			System.out.println("----------------------------------------------");
+			System.out.println("[" + this.player[0].getPlayerName() + "'s HP: " + playerHealthPoint + "]");
+			System.out.println("[" + this.monster + "'s HP: " + monsterHealthPoint + "]\n");
+			System.out.println(">>What would you do?<<");
+
+			System.out.println("1.Fight");
+			System.out.println("2.Run");
+			System.out.println("3.Quit Game");
+
+			selection = Integer.parseInt(dungeonScanner.nextLine());
+
+			if (selection == 1) {
+
+				playerHealthPoint = playerHealthPoint - monsterDamage;
+				monsterHealthPoint = monsterHealthPoint - playerDamage;
+
+				System.out.println("==============================================================\n");
+				System.out.println(">> Your attacked the " + monster + " for " + playerDamage + " Damage! \t<<");
+				System.out.println(">> Monster attacked you with " + monsterDamage + " Damage in retaliation!<<\n");
+				System.out.println("==============================================================");
+
+				if (monsterHealthPoint <= 0) {
+					System.out.println("You have defeated a monster going back to Menu");
+
+					monsterHealthPoint = 0;
+					playerHealthPoint = 0;
+
+					// return;
+				} else if (playerHealthPoint <= 0) {
+					System.out.println(("You have died going back to Menu"));
+
+					monsterHealthPoint = 0;
+					playerHealthPoint = 0;
+					// gameSave();
+					// return;
+				}
+			} else if (selection == 2) {
+				System.out.println("You ran away from a monster, new monster appeared");
+				monsterHealthPoint = 0;
+				
+			} else if (selection == 3) {
+				System.out.println("Quitting game");
+				monsterHealthPoint = 0;
+				playerHealthPoint = 0;
+			} else
+				System.out.println("\t#### Invaid choice ####\n");
+		}
+		System.out.println("Going back to game Menu");
+		return;
+	}
+
+	public void gameSetup() {
+		Scanner playerScanner = new Scanner(System.in);
+		int index = 0;
+		int selection = 0;
+		String playerName = null;
+
+		while (index < this.player.length) {
+			// 1.PLAYER NAME INPUT
+			System.out.println("Enter Name of Player " + (index + 1) + " of " + this.player.length);
+			playerName = playerScanner.nextLine();
+			if (playerName == null) {
+				while (playerName != null) {
+					System.out.println("Enter a name again");
+					playerName = playerScanner.nextLine();
+				}
+			}
+			// 2.PLAYER WEAPON SELECTION
+			String[] weapons = { "1. Sword", "2. Spear", "3. Arrow", };
+			String playerWeapon = null;
+			System.out.println(Arrays.toString(weapons));
+
+			while (playerWeapon == null) {
+				System.out.println("    ^          ^         |)    ");
+				System.out.println("    |          |         | )    ");
+				System.out.println("   =+=         |         | )    ");
+				System.out.println("    |          |         |)    ");
+				System.out.println("\n >>  Choose your Weapon  <<    ");
+				selection = Integer.parseInt(playerScanner.nextLine());
+				if (selection == 1) {
+					playerWeapon = "Sword";
+				} else if (selection == 2) {
+					playerWeapon = "Spear";
+				} else if (selection == 3) {
+					playerWeapon = "Arrow";
+				} else if (selection != 1 || selection != 2 || selection != 3)
+					System.out.println("Invalid Choice");
+				// index2++;
+			}
+			// 3. PLAYER OBJECT CREATION
+			this.player[index] = new Player(playerName, playerWeapon, 20, 7);
+
+			System.out.println(this.player[index]);
+
+			index++;
+		}
+
+	}
+
+	public static void main(String[] args) {
+
+		Game DungeonQuest = new Game(1);
+
+		/*
+		 * PROGRAM OPERATION DESCRIPTION
+		 * 
+		 * The program is a simple interaction text based game. The program accepts user
+		 * input/choices so that it operates as if the program is communicating with the
+		 * user
+		 * 
+		 * There are four classes - Game (Main), Player , Item and Monster Classes
+		 * 
+		 * 1) Game Class:
+		 * 
+		 * gameSetup() - User is prompted to enter name of the Character they will play
+		 * - User is asked to choose a weapon from given choices - Player object is
+		 * created (Array) - If the user is to create 2 players, it could be changed in
+		 * the public static void main domain (For simplicity character number is
+		 * pre-set to 1 - Scanner is used - Array of Player Class is created in - Nested
+		 * While & else if is used
+		 * 
+		 * dungeon() - when player setup is done from the previous method, the actual
+		 * game runs in dungeon() - Monster Object is created with parameters - while
+		 * loop is crucial to make the game runs unlimited of times even though the
+		 * player or the monster object dies in battle - if statements are used to
+		 * create conditions - when user wishes to end the game, they can simply choose
+		 * an option to quit playing game which will then brings the use to gameSave() -
+		 * again, Scanner is used to prompt users choice
+		 * 
+		 * gameSave() - this method allows user to save game and allow actual
+		 * termination of the program without program crash - if else statement and
+		 * Scanner is used also to create options for selection - IO function is adopted
+		 * to Save ("Create text output for Player Arrays) If the user chooses to
+		 * "Save and quit" the program, Player profile will be created in the given
+		 * directory
+		 * 
+		 * 2) Player Class:
+		 * 
+		 * Player class has several field variables which requires when creating a
+		 * player -For example, PlayerName, Weapon, Health Point and Damage are the
+		 * 'features' of a player in any games in general -Player Class also creates a
+		 * Item Array which is also known as an inventory -Every Player should have an
+		 * Inventory to store items when a character to obtain an item -getter and
+		 * String method are incorporated to return feature such as a player name and
+		 * display in a nice format when game is saved
+		 * 
+		 * 3) Item Class: Item class should have a item name and description - when an
+		 * item is obtained by a player class, item name and description is crucial to
+		 * give some sort of information back to Player - getName and toString method is
+		 * created to do so
+		 * 
+		 * 4) Monster Class: Monster Class has Monster name, monster Health Point and
+		 * Damage - If to make the game more diverse, minimum and maximum damages could
+		 * be used in Random function to randomise HP and Damage value of the monster -
+		 * Monster class returns these values to caller
+		 * 
+		 */
+
+	}
+}
